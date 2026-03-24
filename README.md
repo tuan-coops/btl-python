@@ -1,6 +1,6 @@
-# Pet Shop Backend - Milestone 1
+# Pet Shop Backend
 
-Milestone 1 dựng khung backend bằng FastAPI cho website bán sản phẩm thú cưng. Project tập trung vào cấu trúc rõ ràng, cấu hình bằng `.env`, kết nối PostgreSQL, SQLAlchemy 2.0, Alembic và một health check endpoint cơ bản.
+Backend FastAPI cho website bán sản phẩm thú cưng. Codebase hiện có scaffold cơ bản, cấu hình `.env`, PostgreSQL bằng Docker Compose, SQLAlchemy 2.0, Alembic, health check endpoint và bộ models dữ liệu cốt lõi cho milestone 2.
 
 ## Công nghệ sử dụng
 
@@ -65,6 +65,9 @@ APP_NAME=Pet Shop Backend
 APP_VERSION=0.1.0
 API_V1_PREFIX=/api/v1
 DEBUG=true
+JWT_SECRET_KEY=change-this-secret
+JWT_ALGORITHM=HS256
+ACCESS_TOKEN_EXPIRE_MINUTES=60
 
 POSTGRES_SERVER=localhost
 POSTGRES_PORT=5432
@@ -113,7 +116,23 @@ Ví dụ response:
 }
 ```
 
-## 6. Chạy migration
+## 6. Auth endpoints
+
+Milestone 3 hiện có các endpoint:
+
+```text
+POST /api/v1/auth/register
+POST /api/v1/auth/login
+GET  /api/v1/auth/me
+```
+
+`/auth/login` trả về JWT access token kiểu bearer. Dùng token này với header:
+
+```text
+Authorization: Bearer <access_token>
+```
+
+## 7. Chạy migration
 
 Apply migration hiện có:
 
@@ -127,10 +146,16 @@ Tạo migration mới sau khi thêm model:
 alembic revision --autogenerate -m "create products table"
 ```
 
-## 7. Chạy test
+## 8. Chạy test
 
 ```powershell
 pytest
+```
+
+Chạy riêng auth tests:
+
+```powershell
+pytest tests/test_auth.py
 ```
 
 ## Ghi chú thiết kế
@@ -138,15 +163,25 @@ pytest
 - `app/api`: chứa router và versioning API.
 - `app/core`: chứa config và các thành phần lõi.
 - `app/db`: chứa SQLAlchemy base, engine, session.
-- `app/models`: chứa ORM models.
+- `app/models`: chứa ORM models cho `Role`, `User`, `Category`, `Product`, `ProductImage`, `Cart`, `CartItem`, `Order`, `OrderItem`, `Address`, `Article`.
 - `app/repositories`: dành cho tầng truy vấn DB ở milestone sau.
 - `app/services`: dành cho business logic ở milestone sau.
 - `app/schemas`: chứa request/response schemas.
 - `tests`: chứa test cơ bản cho endpoint.
 
-## Milestone 2 gợi ý
+## Dữ liệu hiện có
 
-- Thêm module `users`, `auth` và JWT authentication.
-- Tách repository/service cho từng domain.
-- Thiết kế entity chính: `User`, `Category`, `Product`, `Cart`, `Order`.
-- Bổ sung bộ test cho database, auth và luồng CRUD cơ bản.
+- `roles`: role phân quyền cơ bản, có seed `admin` và `customer` trong migration đầu tiên.
+- `users`: thông tin tài khoản, liên kết `role`, `addresses`, `cart`, `orders`.
+- `categories`, `products`, `product_images`: phục vụ danh mục và hiển thị shop/product detail.
+- `carts`, `cart_items`: mỗi user có một cart, mỗi item unique theo cặp `cart + product`.
+- `orders`, `order_items`: lưu đơn hàng và snapshot sản phẩm khi mua.
+- `addresses`: địa chỉ giao hàng của user.
+- `articles`: bài viết chia sẻ kiến thức chăm sóc thú cưng.
+
+## Milestone 3 gợi ý
+
+- Thêm module `auth` với đăng ký, đăng nhập, JWT, hash password.
+- Thêm dependency kiểm tra user hiện tại và phân quyền admin/customer.
+- Bắt đầu API CRUD cho `categories`, `products`, `users`.
+- Viết test cho auth flow, permission và repository/service.

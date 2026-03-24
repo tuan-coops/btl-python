@@ -9,12 +9,16 @@ class Settings(BaseSettings):
     app_version: str = "0.1.0"
     api_v1_prefix: str = "/api/v1"
     debug: bool = True
+    jwt_secret_key: str = "change-me"
+    jwt_algorithm: str = "HS256"
+    access_token_expire_minutes: int = 60
 
     postgres_server: str = "localhost"
     postgres_port: int = 5432
     postgres_user: str = "postgres"
     postgres_password: str = "postgres"
     postgres_db: str = "pet_shop"
+    database_url_override: str | None = None
 
     model_config = SettingsConfigDict(
         env_file=".env",
@@ -26,6 +30,8 @@ class Settings(BaseSettings):
     @computed_field
     @property
     def database_url(self) -> str:
+        if self.database_url_override:
+            return self.database_url_override
         return (
             "postgresql+psycopg://"
             f"{self.postgres_user}:{self.postgres_password}"
