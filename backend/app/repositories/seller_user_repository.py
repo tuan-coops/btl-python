@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session, joinedload
 from app.models.user import User
 
 
-class AdminUserRepository:
+class SellerUserRepository:
     def __init__(self, db: Session) -> None:
         self.db = db
 

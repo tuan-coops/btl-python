@@ -24,7 +24,7 @@ def db_session(tmp_path) -> Generator[Session, None, None]:
     Base.metadata.create_all(bind=engine)
 
     session = TestingSessionLocal()
-    session.add_all([Role(name="admin"), Role(name="customer")])
+    session.add_all([Role(name="seller"), Role(name="customer")])
     session.commit()
 
     try:

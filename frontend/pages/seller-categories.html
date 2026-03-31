@@ -6,32 +6,31 @@
   <title>Pet Shop | Quản lý danh mục</title>
   <link rel="stylesheet" href="../assets/css/styles.css">
 </head>
-<body data-page="admin-categories">
+<body data-page="seller-categories">
   <header id="site-header"></header>
   <main class="page-section container">
     <div class="page-header">
       <div>
         <h1 class="page-title">Quản lý danh mục</h1>
-        <p class="section-subtitle">Thêm, sửa, ẩn danh mục cho dashboard admin.</p>
       </div>
     </div>
     <div class="grid-two">
-      <form id="admin-category-form" class="form-card">
-        <input id="admin-category-id" type="hidden">
-        <div class="field"><label>Tên danh mục</label><input id="admin-category-name" required></div>
-        <div class="field"><label>Slug</label><input id="admin-category-slug" required></div>
-        <div class="field"><label>Mô tả</label><textarea id="admin-category-description"></textarea></div>
-        <div class="field"><label><input id="admin-category-active" type="checkbox" checked> Đang hoạt động</label></div>
+      <form id="seller-category-form" class="form-card">
+        <input id="seller-category-id" type="hidden">
+        <div class="field"><label>Tên danh mục</label><input id="seller-category-name" required></div>
+        <div class="field"><label>Slug</label><input id="seller-category-slug" required></div>
+        <div class="field"><label>Mô tả</label><textarea id="seller-category-description"></textarea></div>
+        <div class="field"><label><input id="seller-category-active" type="checkbox" checked> Đang hoạt động</label></div>
         <button class="button" type="submit">Lưu danh mục</button>
       </form>
       <div class="table-card">
         <div class="table-wrap">
           <table>
             <thead><tr><th>ID</th><th>Tên</th><th>Slug</th><th>Active</th><th>Hành động</th></tr></thead>
-            <tbody id="admin-categories-body"></tbody>
+            <tbody id="seller-categories-body"></tbody>
           </table>
         </div>
-        <div id="admin-categories-pagination"></div>
+        <div id="seller-categories-pagination"></div>
       </div>
     </div>
   </main>
@@ -42,6 +41,6 @@
   <script src="../assets/js/auth.js"></script>
   <script src="../assets/js/ui.js"></script>
   <script src="../assets/js/common.js"></script>
-  <script src="../assets/js/admin-categories.js"></script>
+  <script src="../assets/js/seller-categories.js"></script>
 </body>
 </html>

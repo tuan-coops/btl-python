@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
-  window.PetShop.ensureAdminAccess().then(function (ok) {
+  window.PetShop.ensureSellerAccess().then(function (ok) {
     if (!ok) {
       return;
     }
@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", function () {
 async function loadDashboard() {
   var target = document.getElementById("dashboard-stats");
   try {
-    var data = await window.PetShop.api.request("/admin/dashboard");
+    var data = await window.PetShop.api.request("/seller/dashboard");
     target.innerHTML =
       '<div class="summary-grid">' +
       statCard("Tổng user", data.total_users) +

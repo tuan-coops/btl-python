@@ -179,7 +179,7 @@ button:disabled {
 .form-card,
 .summary-card,
 .notice,
-.admin-panel {
+.seller-panel {
   background: rgba(255, 255, 255, 0.92);
   border: 1px solid var(--border);
   border-radius: var(--radius);
@@ -300,7 +300,7 @@ button:disabled {
 .table-card,
 .form-card,
 .summary-card,
-.admin-panel {
+.seller-panel {
   padding: 20px;
 }
 
@@ -553,7 +553,7 @@ th {
   .table-card,
   .form-card,
   .summary-card,
-  .admin-panel {
+  .seller-panel {
     padding: 16px;
   }
 

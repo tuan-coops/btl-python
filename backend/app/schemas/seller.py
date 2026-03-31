@@ -12,7 +12,7 @@ class PageMetaResponse(BaseModel):
     page_size: int
 
 
-class AdminDashboardResponse(BaseModel):
+class SellerDashboardResponse(BaseModel):
     total_users: int
     total_products: int
     total_orders: int
@@ -21,21 +21,21 @@ class AdminDashboardResponse(BaseModel):
     monthly_revenue: Decimal
 
 
-class AdminCategoryCreateRequest(BaseModel):
+class SellerCategoryCreateRequest(BaseModel):
     name: str = Field(min_length=1, max_length=100)
     slug: str = Field(min_length=1, max_length=120)
     description: str | None = None
     is_active: bool = True
 
 
-class AdminCategoryUpdateRequest(BaseModel):
+class SellerCategoryUpdateRequest(BaseModel):
     name: str | None = Field(default=None, min_length=1, max_length=100)
     slug: str | None = Field(default=None, min_length=1, max_length=120)
     description: str | None = None
     is_active: bool | None = None
 
 
-class AdminCategoryResponse(BaseModel):
+class SellerCategoryResponse(BaseModel):
     id: int
     name: str
     slug: str
@@ -47,11 +47,11 @@ class AdminCategoryResponse(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
 
-class AdminCategoryListResponse(PageMetaResponse):
-    items: list[AdminCategoryResponse]
+class SellerCategoryListResponse(PageMetaResponse):
+    items: list[SellerCategoryResponse]
 
 
-class AdminProductCreateRequest(BaseModel):
+class SellerProductCreateRequest(BaseModel):
     name: str = Field(min_length=1, max_length=255)
     slug: str = Field(min_length=1, max_length=255)
     sku: str = Field(min_length=1, max_length=100)
@@ -65,7 +65,7 @@ class AdminProductCreateRequest(BaseModel):
     primary_image_url: str | None = None
 
 
-class AdminProductUpdateRequest(BaseModel):
+class SellerProductUpdateRequest(BaseModel):
     name: str | None = Field(default=None, min_length=1, max_length=255)
     slug: str | None = Field(default=None, min_length=1, max_length=255)
     sku: str | None = Field(default=None, min_length=1, max_length=100)
@@ -79,7 +79,7 @@ class AdminProductUpdateRequest(BaseModel):
     primary_image_url: str | None = None
 
 
-class AdminProductImageResponse(BaseModel):
+class SellerProductImageResponse(BaseModel):
     id: int
     image_url: str
     alt_text: str | None
@@ -87,7 +87,7 @@ class AdminProductImageResponse(BaseModel):
     sort_order: int
 
 
-class AdminProductResponse(BaseModel):
+class SellerProductResponse(BaseModel):
     id: int
     name: str
     slug: str
@@ -100,16 +100,16 @@ class AdminProductResponse(BaseModel):
     category_id: int
     category_name: str
     is_active: bool
-    images: list[AdminProductImageResponse]
+    images: list[SellerProductImageResponse]
     created_at: datetime
     updated_at: datetime
 
 
-class AdminProductListResponse(PageMetaResponse):
-    items: list[AdminProductResponse]
+class SellerProductListResponse(PageMetaResponse):
+    items: list[SellerProductResponse]
 
 
-class AdminUserListItemResponse(BaseModel):
+class SellerUserListItemResponse(BaseModel):
     id: int
     full_name: str
     email: str
@@ -120,11 +120,11 @@ class AdminUserListItemResponse(BaseModel):
     updated_at: datetime
 
 
-class AdminUserListResponse(PageMetaResponse):
-    items: list[AdminUserListItemResponse]
+class SellerUserListResponse(PageMetaResponse):
+    items: list[SellerUserListItemResponse]
 
 
-class AdminOrderUserResponse(BaseModel):
+class SellerOrderUserResponse(BaseModel):
     id: int
     full_name: str
     email: str
@@ -132,7 +132,7 @@ class AdminOrderUserResponse(BaseModel):
     role: str
 
 
-class AdminOrderSummaryResponse(BaseModel):
+class SellerOrderSummaryResponse(BaseModel):
     id: int
     order_code: str
     status: str
@@ -142,18 +142,18 @@ class AdminOrderSummaryResponse(BaseModel):
     discount_amount: Decimal
     total_amount: Decimal
     created_at: datetime
-    user: AdminOrderUserResponse
+    user: SellerOrderUserResponse
     items: list[OrderItemResponse]
 
 
-class AdminOrderListResponse(PageMetaResponse):
-    items: list[AdminOrderSummaryResponse]
+class SellerOrderListResponse(PageMetaResponse):
+    items: list[SellerOrderSummaryResponse]
 
 
-class AdminOrderDetailResponse(AdminOrderSummaryResponse):
+class SellerOrderDetailResponse(SellerOrderSummaryResponse):
     shipping_address: ShippingSnapshotResponse
     note: str | None
 
 
-class AdminOrderStatusUpdateRequest(BaseModel):
+class SellerOrderStatusUpdateRequest(BaseModel):
     status: str

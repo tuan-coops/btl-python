@@ -33,7 +33,7 @@ class ArticleListResponse(BaseModel):
     page_size: int
 
 
-class AdminArticleCreateRequest(BaseModel):
+class SellerArticleCreateRequest(BaseModel):
     title: str = Field(min_length=1, max_length=255)
     slug: str = Field(min_length=1, max_length=255)
     summary: str | None = None
@@ -41,7 +41,7 @@ class AdminArticleCreateRequest(BaseModel):
     is_published: bool = False
 
 
-class AdminArticleUpdateRequest(BaseModel):
+class SellerArticleUpdateRequest(BaseModel):
     title: str | None = Field(default=None, min_length=1, max_length=255)
     slug: str | None = Field(default=None, min_length=1, max_length=255)
     summary: str | None = None
@@ -49,7 +49,7 @@ class AdminArticleUpdateRequest(BaseModel):
     is_published: bool | None = None
 
 
-class AdminArticleResponse(BaseModel):
+class SellerArticleResponse(BaseModel):
     id: int
     title: str
     slug: str
@@ -63,8 +63,8 @@ class AdminArticleResponse(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
 
-class AdminArticleListResponse(BaseModel):
-    items: list[AdminArticleResponse]
+class SellerArticleListResponse(BaseModel):
+    items: list[SellerArticleResponse]
     total: int
     page: int
     page_size: int

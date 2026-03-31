@@ -9,23 +9,27 @@
     register: "pages/register.html",
     profile: "pages/profile.html",
     orders: "pages/orders.html",
-    adminLogin: "pages/admin-login.html",
-    adminDashboard: "pages/admin-dashboard.html",
-    adminProducts: "pages/admin-products.html",
-    adminCategories: "pages/admin-categories.html",
-    adminOrders: "pages/admin-orders.html",
-    adminCustomers: "pages/admin-customers.html",
-    adminArticles: "pages/admin-articles.html",
+    sellerLogin: "pages/seller-login.html",
+    sellerDashboard: "pages/seller-dashboard.html",
+    sellerProducts: "pages/seller-products.html",
+    sellerCategories: "pages/seller-categories.html",
+    sellerOrders: "pages/seller-orders.html",
+    sellerCustomers: "pages/seller-customers.html",
+    sellerArticles: "pages/seller-articles.html",
   };
 
   function href(pageKey) {
     return window.PetShop.config.getRootPrefix() + pages[pageKey];
   }
 
+  function navLink(pageKey, label, active) {
+    return '<a class="nav-link ' + (active ? "active" : "") + '" href="' + href(pageKey) + '">' + label + "</a>";
+  }
+
   function buildHeader() {
     var page = document.body.dataset.page || "";
     var user = window.PetShop.storage.getUser();
-    var isAdmin = user && user.role && user.role.name === "admin";
+    var isSeller = user && user.role && user.role.name === "seller";
     var header = document.getElementById("site-header");
 
     if (!header) {
@@ -44,7 +48,7 @@
       navLink("cart", "Giỏ hàng", page === "cart") +
       navLink("orders", "Đơn hàng", page === "orders") +
       '</nav><div class="nav-actions">' +
-      (isAdmin ? navLink("adminDashboard", "Admin", page.indexOf("admin") === 0) : "") +
+      (isSeller ? navLink("sellerDashboard", "Người bán", page.indexOf("seller") === 0) : "") +
       (user
         ? '<a class="nav-link ' + (page === "profile" ? "active" : "") + '" href="' + href("profile") + '">Tài khoản</a>' +
           '<button class="button-ghost" id="logout-button">Đăng xuất</button>'
@@ -64,22 +68,12 @@
     }
   }
 
-  function navLink(pageKey, label, active) {
-    return '<a class="nav-link ' + (active ? "active" : "") + '" href="' + href(pageKey) + '">' + label + "</a>";
-  }
-
   function buildFooter() {
     var footer = document.getElementById("site-footer");
     if (!footer) {
       return;
     }
-    footer.className = "site-footer";
-    footer.innerHTML =
-      '<div class="container">' +
-      "<strong>Pet Shop Demo</strong>" +
-      "<p>Frontend thuần HTML, CSS, JavaScript. API mặc định: " +
-      window.PetShop.ui.escapeHtml(window.PetShop.config.getApiBaseUrl()) +
-      "</p></div>";
+    footer.innerHTML = "";
   }
 
   function requireAuth(options) {
@@ -89,8 +83,8 @@
       window.location.href = href("login");
       return false;
     }
-    if (options.admin && (!user || !user.role || user.role.name !== "admin")) {
-      window.PetShop.ui.toast("Bạn không có quyền truy cập khu vực admin", "error");
+    if (options.seller && (!user || !user.role || user.role.name !== "seller")) {
+      window.PetShop.ui.toast("Bạn không có quyền truy cập khu vực người bán", "error");
       setTimeout(function () {
         window.location.href = href("home");
       }, 500);
@@ -99,28 +93,28 @@
     return true;
   }
 
-  async function ensureAdminAccess() {
+  async function ensureSellerAccess() {
     if (!window.PetShop.storage.getToken()) {
-      window.location.href = href("adminLogin");
+      window.location.href = href("sellerLogin");
       return false;
     }
 
     try {
       var user = await window.PetShop.auth.fetchCurrentUser();
-      if (!user || !user.role || user.role.name !== "admin") {
+      if (!user || !user.role || user.role.name !== "seller") {
         window.PetShop.storage.clearAuth();
-        window.PetShop.ui.toast("Tài khoản không có quyền admin", "error");
+        window.PetShop.ui.toast("Tài khoản không có quyền người bán", "error");
         setTimeout(function () {
-          window.location.href = href("adminLogin");
+          window.location.href = href("sellerLogin");
         }, 500);
         return false;
       }
       return true;
     } catch (error) {
       window.PetShop.storage.clearAuth();
-      window.PetShop.ui.toast("Phiên đăng nhập admin không hợp lệ", "error");
+      window.PetShop.ui.toast("Phiên đăng nhập người bán không hợp lệ", "error");
       setTimeout(function () {
-        window.location.href = href("adminLogin");
+        window.location.href = href("sellerLogin");
       }, 500);
       return false;
     }
@@ -135,5 +129,5 @@
   window.PetShop.pages = pages;
   window.PetShop.href = href;
   window.PetShop.requireAuth = requireAuth;
-  window.PetShop.ensureAdminAccess = ensureAdminAccess;
+  window.PetShop.ensureSellerAccess = ensureSellerAccess;
 })();

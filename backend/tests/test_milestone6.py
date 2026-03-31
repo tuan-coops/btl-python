@@ -12,6 +12,7 @@ def register_and_login(
     *,
     email: str,
     password: str = "Password123",
+    role: str = "customer",
 ) -> dict:
     register_response = client.post(
         "/api/v1/auth/register",
@@ -20,6 +21,7 @@ def register_and_login(
             "email": email,
             "phone": "0123456789",
             "password": password,
+            "role": role,
         },
     )
     assert register_response.status_code == 201
@@ -35,22 +37,17 @@ def auth_headers(token: str) -> dict[str, str]:
     return {"Authorization": f"Bearer {token}"}
 
 
-def promote_user_to_admin(db_session: Session, email: str) -> None:
-    admin_role = db_session.query(Role).filter(Role.name == "admin").first()
+def promote_user_to_seller(db_session: Session, email: str) -> None:
+    seller_role = db_session.query(Role).filter(Role.name == "seller").first()
     user = db_session.query(User).filter(User.email == email).first()
-    user.role_id = admin_role.id
+    user.role_id = seller_role.id
     db_session.commit()
 
 
-def test_admin_can_access_dashboard(client: TestClient, db_session: Session) -> None:
-    admin = register_and_login(client, email="dashboard-admin@example.com")
-    promote_user_to_admin(db_session, "dashboard-admin@example.com")
-    admin = client.post(
-        "/api/v1/auth/login",
-        json={"email": "dashboard-admin@example.com", "password": "Password123"},
-    ).json()
+def test_seller_can_access_dashboard(client: TestClient) -> None:
+    seller = register_and_login(client, email="dashboard-seller@example.com", role="seller")
 
-    response = client.get("/api/v1/admin/dashboard", headers=auth_headers(admin["access_token"]))
+    response = client.get("/api/v1/seller/dashboard", headers=auth_headers(seller["access_token"]))
 
     assert response.status_code == 200
     body = response.json()
@@ -62,7 +59,7 @@ def test_admin_can_access_dashboard(client: TestClient, db_session: Session) -> 
 def test_customer_cannot_access_dashboard(client: TestClient) -> None:
     customer = register_and_login(client, email="dashboard-customer@example.com")
 
-    response = client.get("/api/v1/admin/dashboard", headers=auth_headers(customer["access_token"]))
+    response = client.get("/api/v1/seller/dashboard", headers=auth_headers(customer["access_token"]))
 
     assert response.status_code == 403
 
@@ -96,17 +93,17 @@ def test_public_article_list_returns_only_published(client: TestClient, db_sessi
     assert "Draft Article" not in titles
 
 
-def test_admin_create_and_update_article(client: TestClient, db_session: Session) -> None:
-    admin = register_and_login(client, email="article-admin@example.com")
-    promote_user_to_admin(db_session, "article-admin@example.com")
-    admin = client.post(
+def test_seller_create_and_update_article(client: TestClient, db_session: Session) -> None:
+    seller = register_and_login(client, email="article-seller@example.com")
+    promote_user_to_seller(db_session, "article-seller@example.com")
+    seller = client.post(
         "/api/v1/auth/login",
-        json={"email": "article-admin@example.com", "password": "Password123"},
+        json={"email": "article-seller@example.com", "password": "Password123"},
     ).json()
 
     create_response = client.post(
-        "/api/v1/admin/articles",
-        headers=auth_headers(admin["access_token"]),
+        "/api/v1/seller/articles",
+        headers=auth_headers(seller["access_token"]),
         json={
             "title": "Pet Care Tips",
             "slug": "pet-care-tips",
@@ -119,8 +116,8 @@ def test_admin_create_and_update_article(client: TestClient, db_session: Session
     article_id = create_response.json()["id"]
 
     update_response = client.patch(
-        f"/api/v1/admin/articles/{article_id}",
-        headers=auth_headers(admin["access_token"]),
+        f"/api/v1/seller/articles/{article_id}",
+        headers=auth_headers(seller["access_token"]),
         json={"is_published": True, "summary": "Updated summary"},
     )
 
@@ -134,7 +131,7 @@ def test_seed_data_runs_safely(client: TestClient, db_session: Session) -> None:
     seed_data(db_session)
     seed_data(db_session)
 
-    assert db_session.query(Role).filter(Role.name == "admin").count() == 1
+    assert db_session.query(Role).filter(Role.name == "seller").count() == 1
     assert db_session.query(Role).filter(Role.name == "customer").count() == 1
-    assert db_session.query(User).filter(User.email == "admin@example.com").count() == 1
+    assert db_session.query(User).filter(User.email == "seller@example.com").count() == 1
     assert db_session.query(Article).filter(Article.slug == "how-to-choose-dog-food").count() == 1

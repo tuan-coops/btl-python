@@ -28,9 +28,9 @@
     window.PetShop.storage.clearAuth();
   }
 
-  function isAdmin() {
+  function isSeller() {
     var user = window.PetShop.storage.getUser();
-    return user && user.role && user.role.name === "admin";
+    return user && user.role && user.role.name === "seller";
   }
 
   window.PetShop = window.PetShop || {};
@@ -39,6 +39,6 @@
     login: login,
     register: register,
     logout: logout,
-    isAdmin: isAdmin,
+    isSeller: isSeller,
   };
 })();

@@ -10,6 +10,7 @@ from app.schemas.auth import LoginRequest, RegisterRequest
 
 class AuthService:
     CUSTOMER_ROLE = "customer"
+    SELLER_ROLE = "seller"
     logger = get_logger(__name__)
 
     def __init__(self, db: Session) -> None:
@@ -24,15 +25,15 @@ class AuthService:
                 detail="Email is already registered",
             )
 
-        customer_role = self.db.query(Role).filter(Role.name == self.CUSTOMER_ROLE).first()
-        if customer_role is None:
+        role = self.db.query(Role).filter(Role.name == payload.role).first()
+        if role is None:
             raise HTTPException(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                detail="Default customer role is not configured",
+                detail=f"Role '{payload.role}' is not configured",
             )
 
         user = User(
-            role_id=customer_role.id,
+            role_id=role.id,
             full_name=payload.full_name,
             email=payload.email,
             phone=payload.phone,

@@ -6,7 +6,7 @@
   <title>Pet Shop | Quản lý đơn hàng</title>
   <link rel="stylesheet" href="../assets/css/styles.css">
 </head>
-<body data-page="admin-orders">
+<body data-page="seller-orders">
   <header id="site-header"></header>
   <main class="page-section container">
     <div class="page-header">
@@ -17,8 +17,8 @@
     </div>
     <div class="grid-two">
       <div class="table-card">
-        <form id="admin-order-filter-form" class="filter-row">
-          <select id="admin-order-filter-status">
+        <form id="seller-order-filter-form" class="filter-row">
+          <select id="seller-order-filter-status">
             <option value="">Tất cả trạng thái</option>
             <option value="pending">pending</option>
             <option value="confirmed">confirmed</option>
@@ -31,12 +31,12 @@
         <div class="table-wrap">
           <table>
             <thead><tr><th>Mã đơn</th><th>Khách hàng</th><th>Trạng thái</th><th>Tổng tiền</th><th>Ngày tạo</th><th></th></tr></thead>
-            <tbody id="admin-orders-body"></tbody>
+            <tbody id="seller-orders-body"></tbody>
           </table>
         </div>
-        <div id="admin-orders-pagination"></div>
+        <div id="seller-orders-pagination"></div>
       </div>
-      <div id="admin-order-detail"></div>
+      <div id="seller-order-detail"></div>
     </div>
   </main>
   <footer id="site-footer"></footer>
@@ -46,6 +46,6 @@
   <script src="../assets/js/auth.js"></script>
   <script src="../assets/js/ui.js"></script>
   <script src="../assets/js/common.js"></script>
-  <script src="../assets/js/admin-orders.js"></script>
+  <script src="../assets/js/seller-orders.js"></script>
 </body>
 </html>

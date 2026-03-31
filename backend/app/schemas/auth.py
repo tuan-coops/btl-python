@@ -1,3 +1,5 @@
+from typing import Literal
+
 from pydantic import BaseModel, EmailStr, Field
 
 from app.schemas.user import UserProfile
@@ -8,6 +10,7 @@ class RegisterRequest(BaseModel):
     email: EmailStr
     phone: str | None = Field(default=None, max_length=20)
     password: str = Field(min_length=8, max_length=128)
+    role: Literal["customer", "seller"] = "customer"
 
 
 class LoginRequest(BaseModel):

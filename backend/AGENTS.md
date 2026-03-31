@@ -3,7 +3,7 @@
 ## Project Overview
 Backend cho website giới thiệu và bán sản phẩm thú cưng, phục vụ:
 - customer web app
-- admin dashboard
+- seller dashboard
 
 Mục tiêu là xây dựng một backend MVP rõ ràng, dễ bảo trì, dễ mở rộng, phù hợp đồ án hoặc sản phẩm thử nghiệm.
 
@@ -42,7 +42,7 @@ Mục tiêu là xây dựng một backend MVP rõ ràng, dễ bảo trì, dễ m
 - checkout tạo đơn hàng
 - xem lịch sử đơn hàng
 
-### Admin features
+### Seller features
 - quản lý category
 - quản lý product
 - cập nhật tồn kho
@@ -59,7 +59,7 @@ Mục tiêu là xây dựng một backend MVP rõ ràng, dễ bảo trì, dễ m
 - products
 - cart
 - orders
-- admin
+- seller
 - articles
 - dashboard
 - core
@@ -79,7 +79,7 @@ Mục tiêu là xây dựng một backend MVP rõ ràng, dễ bảo trì, dễ m
 - Article
 
 ## Business Rules
-- User có role: `customer` hoặc `admin`
+- User có role: `customer` hoặc `seller`
 - Product phải có:
   - name
   - slug nếu cần
@@ -99,7 +99,7 @@ Mục tiêu là xây dựng một backend MVP rõ ràng, dễ bảo trì, dễ m
 - Cart item và Order item phải lưu snapshot giá tại thời điểm thêm/mua
 - Không cho checkout nếu số lượng vượt tồn kho
 - Khi checkout thành công phải trừ tồn kho
-- Chỉ admin mới dùng được admin endpoints
+- Chỉ seller mới dùng được seller endpoints
 - Mọi input đều phải validate bằng Pydantic
 - Password phải được hash an toàn
 - JWT secret không được hardcode

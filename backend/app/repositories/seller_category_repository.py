@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 from app.models.category import Category
 
 
-class AdminCategoryRepository:
+class SellerCategoryRepository:
     def __init__(self, db: Session) -> None:
         self.db = db
 

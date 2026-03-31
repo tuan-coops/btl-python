@@ -14,34 +14,34 @@ from app.models.product import Product
 from app.models.product_image import ProductImage
 from app.models.user import User
 from app.repositories.article_repository import ArticleRepository
-from app.repositories.admin_category_repository import AdminCategoryRepository
-from app.repositories.admin_order_repository import AdminOrderRepository
-from app.repositories.admin_product_repository import AdminProductRepository
-from app.repositories.admin_user_repository import AdminUserRepository
-from app.schemas.admin import (
-    AdminCategoryCreateRequest,
-    AdminCategoryListResponse,
-    AdminCategoryResponse,
-    AdminCategoryUpdateRequest,
-    AdminDashboardResponse,
-    AdminOrderDetailResponse,
-    AdminOrderListResponse,
-    AdminOrderStatusUpdateRequest,
-    AdminOrderSummaryResponse,
-    AdminOrderUserResponse,
-    AdminProductCreateRequest,
-    AdminProductImageResponse,
-    AdminProductListResponse,
-    AdminProductResponse,
-    AdminProductUpdateRequest,
-    AdminUserListItemResponse,
-    AdminUserListResponse,
+from app.repositories.seller_category_repository import SellerCategoryRepository
+from app.repositories.seller_order_repository import SellerOrderRepository
+from app.repositories.seller_product_repository import SellerProductRepository
+from app.repositories.seller_user_repository import SellerUserRepository
+from app.schemas.seller import (
+    SellerCategoryCreateRequest,
+    SellerCategoryListResponse,
+    SellerCategoryResponse,
+    SellerCategoryUpdateRequest,
+    SellerDashboardResponse,
+    SellerOrderDetailResponse,
+    SellerOrderListResponse,
+    SellerOrderStatusUpdateRequest,
+    SellerOrderSummaryResponse,
+    SellerOrderUserResponse,
+    SellerProductCreateRequest,
+    SellerProductImageResponse,
+    SellerProductListResponse,
+    SellerProductResponse,
+    SellerProductUpdateRequest,
+    SellerUserListItemResponse,
+    SellerUserListResponse,
 )
 from app.schemas.article import (
-    AdminArticleCreateRequest,
-    AdminArticleListResponse,
-    AdminArticleResponse,
-    AdminArticleUpdateRequest,
+    SellerArticleCreateRequest,
+    SellerArticleListResponse,
+    SellerArticleResponse,
+    SellerArticleUpdateRequest,
 )
 from app.schemas.order import OrderItemResponse, ShippingSnapshotResponse
 
@@ -54,21 +54,21 @@ ALLOWED_ORDER_TRANSITIONS: dict[OrderStatus, set[OrderStatus]] = {
 }
 
 
-class AdminService:
+class SellerService:
     def __init__(self, db: Session) -> None:
         self.db = db
         self.logger = get_logger(__name__)
-        self.category_repository = AdminCategoryRepository(db)
-        self.product_repository = AdminProductRepository(db)
-        self.user_repository = AdminUserRepository(db)
-        self.order_repository = AdminOrderRepository(db)
+        self.category_repository = SellerCategoryRepository(db)
+        self.product_repository = SellerProductRepository(db)
+        self.user_repository = SellerUserRepository(db)
+        self.order_repository = SellerOrderRepository(db)
         self.article_repository = ArticleRepository(db)
 
-    def _serialize_category(self, category: Category) -> AdminCategoryResponse:
-        return AdminCategoryResponse.model_validate(category)
+    def _serialize_category(self, category: Category) -> SellerCategoryResponse:
+        return SellerCategoryResponse.model_validate(category)
 
-    def _serialize_product(self, product: Product) -> AdminProductResponse:
-        return AdminProductResponse(
+    def _serialize_product(self, product: Product) -> SellerProductResponse:
+        return SellerProductResponse(
             id=product.id,
             name=product.name,
             slug=product.slug,
@@ -82,7 +82,7 @@ class AdminService:
             category_name=product.category.name,
             is_active=product.is_active,
             images=[
-                AdminProductImageResponse(
+                SellerProductImageResponse(
                     id=image.id,
                     image_url=image.image_url,
                     alt_text=image.alt_text,
@@ -95,8 +95,8 @@ class AdminService:
             updated_at=product.updated_at,
         )
 
-    def _serialize_user(self, user: User) -> AdminUserListItemResponse:
-        return AdminUserListItemResponse(
+    def _serialize_user(self, user: User) -> SellerUserListItemResponse:
+        return SellerUserListItemResponse(
             id=user.id,
             full_name=user.full_name,
             email=user.email,
@@ -107,8 +107,8 @@ class AdminService:
             updated_at=user.updated_at,
         )
 
-    def _serialize_order(self, order: Order) -> AdminOrderSummaryResponse:
-        return AdminOrderSummaryResponse(
+    def _serialize_order(self, order: Order) -> SellerOrderSummaryResponse:
+        return SellerOrderSummaryResponse(
             id=order.id,
             order_code=order.order_code,
             status=order.status.value,
@@ -118,7 +118,7 @@ class AdminService:
             discount_amount=order.discount_amount,
             total_amount=order.total_amount,
             created_at=order.created_at,
-            user=AdminOrderUserResponse(
+            user=SellerOrderUserResponse(
                 id=order.user.id,
                 full_name=order.user.full_name,
                 email=order.user.email,
@@ -138,20 +138,20 @@ class AdminService:
             ],
         )
 
-    def list_categories(self, *, is_active: bool | None, page: int, page_size: int) -> AdminCategoryListResponse:
+    def list_categories(self, *, is_active: bool | None, page: int, page_size: int) -> SellerCategoryListResponse:
         categories, total = self.category_repository.list_categories(
             is_active=is_active,
             page=page,
             page_size=page_size,
         )
-        return AdminCategoryListResponse(
+        return SellerCategoryListResponse(
             items=[self._serialize_category(category) for category in categories],
             total=total,
             page=page,
             page_size=page_size,
         )
 
-    def create_category(self, payload: AdminCategoryCreateRequest) -> AdminCategoryResponse:
+    def create_category(self, payload: SellerCategoryCreateRequest) -> SellerCategoryResponse:
         if self.category_repository.get_by_name(payload.name):
             raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Category name already exists")
         if self.category_repository.get_by_slug(payload.slug):
@@ -167,13 +167,13 @@ class AdminService:
         self.db.refresh(category)
         return self._serialize_category(category)
 
-    def get_category(self, category_id: int) -> AdminCategoryResponse:
+    def get_category(self, category_id: int) -> SellerCategoryResponse:
         category = self.category_repository.get_by_id(category_id)
         if category is None:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Category not found")
         return self._serialize_category(category)
 
-    def update_category(self, category_id: int, payload: AdminCategoryUpdateRequest) -> AdminCategoryResponse:
+    def update_category(self, category_id: int, payload: SellerCategoryUpdateRequest) -> SellerCategoryResponse:
         category = self.category_repository.get_by_id(category_id)
         if category is None:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Category not found")
@@ -195,7 +195,7 @@ class AdminService:
         self.db.refresh(category)
         return self._serialize_category(category)
 
-    def delete_category(self, category_id: int) -> AdminCategoryResponse:
+    def delete_category(self, category_id: int) -> SellerCategoryResponse:
         category = self.category_repository.get_by_id(category_id)
         if category is None:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Category not found")
@@ -244,7 +244,7 @@ class AdminService:
         is_active: bool | None,
         page: int,
         page_size: int,
-    ) -> AdminProductListResponse:
+    ) -> SellerProductListResponse:
         products, total = self.product_repository.list_products(
             category_id=category_id,
             pet_type=pet_type,
@@ -253,14 +253,14 @@ class AdminService:
             page=page,
             page_size=page_size,
         )
-        return AdminProductListResponse(
+        return SellerProductListResponse(
             items=[self._serialize_product(product) for product in products],
             total=total,
             page=page,
             page_size=page_size,
         )
 
-    def create_product(self, payload: AdminProductCreateRequest) -> AdminProductResponse:
+    def create_product(self, payload: SellerProductCreateRequest) -> SellerProductResponse:
         self._validate_category(payload.category_id)
         if self.product_repository.get_by_slug(payload.slug):
             raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Product slug already exists")
@@ -285,13 +285,13 @@ class AdminService:
         product = self.product_repository.get_by_id(product.id)
         return self._serialize_product(product)
 
-    def get_product(self, product_id: int) -> AdminProductResponse:
+    def get_product(self, product_id: int) -> SellerProductResponse:
         product = self.product_repository.get_by_id(product_id)
         if product is None:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Product not found")
         return self._serialize_product(product)
 
-    def update_product(self, product_id: int, payload: AdminProductUpdateRequest) -> AdminProductResponse:
+    def update_product(self, product_id: int, payload: SellerProductUpdateRequest) -> SellerProductResponse:
         product = self.product_repository.get_by_id(product_id)
         if product is None:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Product not found")
@@ -328,7 +328,7 @@ class AdminService:
         product = self.product_repository.get_by_id(product.id)
         return self._serialize_product(product)
 
-    def delete_product(self, product_id: int) -> AdminProductResponse:
+    def delete_product(self, product_id: int) -> SellerProductResponse:
         product = self.product_repository.get_by_id(product_id)
         if product is None:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Product not found")
@@ -345,35 +345,35 @@ class AdminService:
         is_active: bool | None,
         page: int,
         page_size: int,
-    ) -> AdminUserListResponse:
+    ) -> SellerUserListResponse:
         users, total = self.user_repository.list_users(
             role=role,
             is_active=is_active,
             page=page,
             page_size=page_size,
         )
-        return AdminUserListResponse(
+        return SellerUserListResponse(
             items=[self._serialize_user(user) for user in users],
             total=total,
             page=page,
             page_size=page_size,
         )
 
-    def list_orders(self, *, status: str | None, page: int, page_size: int) -> AdminOrderListResponse:
+    def list_orders(self, *, status: str | None, page: int, page_size: int) -> SellerOrderListResponse:
         orders, total = self.order_repository.list_orders(status=status, page=page, page_size=page_size)
-        return AdminOrderListResponse(
+        return SellerOrderListResponse(
             items=[self._serialize_order(order) for order in orders],
             total=total,
             page=page,
             page_size=page_size,
         )
 
-    def get_order(self, order_id: int) -> AdminOrderDetailResponse:
+    def get_order(self, order_id: int) -> SellerOrderDetailResponse:
         order = self.order_repository.get_by_id(order_id)
         if order is None:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Order not found")
         summary = self._serialize_order(order)
-        return AdminOrderDetailResponse(
+        return SellerOrderDetailResponse(
             **summary.model_dump(),
             shipping_address=ShippingSnapshotResponse(
                 recipient_name=order.shipping_recipient_name,
@@ -389,7 +389,7 @@ class AdminService:
             note=order.customer_note,
         )
 
-    def update_order_status(self, order_id: int, payload: AdminOrderStatusUpdateRequest) -> AdminOrderDetailResponse:
+    def update_order_status(self, order_id: int, payload: SellerOrderStatusUpdateRequest) -> SellerOrderDetailResponse:
         order = self.order_repository.get_by_id(order_id)
         if order is None:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Order not found")
@@ -402,10 +402,10 @@ class AdminService:
         order.status = next_status
         self.db.commit()
         self.db.refresh(order)
-        self.logger.info("Admin updated order status: order_id=%s status=%s", order.id, order.status.value)
+        self.logger.info("Seller updated order status: order_id=%s status=%s", order.id, order.status.value)
         return self.get_order(order_id)
 
-    def get_dashboard_stats(self) -> AdminDashboardResponse:
+    def get_dashboard_stats(self) -> SellerDashboardResponse:
         now = datetime.now(UTC)
         month_start = datetime(now.year, now.month, 1, tzinfo=UTC)
         monthly_revenue = (
@@ -413,7 +413,7 @@ class AdminService:
             .filter(Order.status == OrderStatus.COMPLETED, Order.created_at >= month_start)
             .scalar()
         )
-        return AdminDashboardResponse(
+        return SellerDashboardResponse(
             total_users=self.db.query(func.count(User.id)).scalar() or 0,
             total_products=self.db.query(func.count(Product.id)).scalar() or 0,
             total_orders=self.db.query(func.count(Order.id)).scalar() or 0,
@@ -427,20 +427,20 @@ class AdminService:
             monthly_revenue=monthly_revenue,
         )
 
-    def list_articles(self, *, is_published: bool | None, page: int, page_size: int) -> AdminArticleListResponse:
+    def list_articles(self, *, is_published: bool | None, page: int, page_size: int) -> SellerArticleListResponse:
         items, total = self.article_repository.list_all(
             is_published=is_published,
             page=page,
             page_size=page_size,
         )
-        return AdminArticleListResponse(
-            items=[AdminArticleResponse.model_validate(item) for item in items],
+        return SellerArticleListResponse(
+            items=[SellerArticleResponse.model_validate(item) for item in items],
             total=total,
             page=page,
             page_size=page_size,
         )
 
-    def create_article(self, payload: AdminArticleCreateRequest) -> AdminArticleResponse:
+    def create_article(self, payload: SellerArticleCreateRequest) -> SellerArticleResponse:
         existing = self.article_repository.get_by_slug(payload.slug)
         if existing:
             raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Article slug already exists")
@@ -455,15 +455,15 @@ class AdminService:
         self.db.add(article)
         self.db.commit()
         self.db.refresh(article)
-        return AdminArticleResponse.model_validate(article)
+        return SellerArticleResponse.model_validate(article)
 
-    def get_article(self, article_id: int) -> AdminArticleResponse:
+    def get_article(self, article_id: int) -> SellerArticleResponse:
         article = self.article_repository.get_by_id(article_id)
         if article is None:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Article not found")
-        return AdminArticleResponse.model_validate(article)
+        return SellerArticleResponse.model_validate(article)
 
-    def update_article(self, article_id: int, payload: AdminArticleUpdateRequest) -> AdminArticleResponse:
+    def update_article(self, article_id: int, payload: SellerArticleUpdateRequest) -> SellerArticleResponse:
         article = self.article_repository.get_by_id(article_id)
         if article is None:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Article not found")
@@ -483,12 +483,12 @@ class AdminService:
             article.published_at = datetime.now(UTC) if payload.is_published else None
         self.db.commit()
         self.db.refresh(article)
-        return AdminArticleResponse.model_validate(article)
+        return SellerArticleResponse.model_validate(article)
 
-    def delete_article(self, article_id: int) -> AdminArticleResponse:
+    def delete_article(self, article_id: int) -> SellerArticleResponse:
         article = self.article_repository.get_by_id(article_id)
         if article is None:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Article not found")
         self.db.delete(article)
         self.db.commit()
-        return AdminArticleResponse.model_validate(article)
+        return SellerArticleResponse.model_validate(article)

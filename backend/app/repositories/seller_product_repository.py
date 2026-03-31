@@ -4,7 +4,7 @@ from app.models.category import Category
 from app.models.product import Product
 
 
-class AdminProductRepository:
+class SellerProductRepository:
     def __init__(self, db: Session) -> None:
         self.db = db
 

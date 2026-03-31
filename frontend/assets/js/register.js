@@ -7,9 +7,9 @@ async function onRegister(event) {
   var form = event.currentTarget;
   var button = form.querySelector('button[type="submit"]');
   if (!window.PetShop.ui.prepareFormSubmit(form, button, [
-    { id: "register-full-name", label: "Ho ten", required: true },
+    { id: "register-full-name", label: "Họ tên", required: true },
     { id: "register-email", label: "Email", required: true, type: "email" },
-    { id: "register-password", label: "Mat khau", required: true, minLength: 8 },
+    { id: "register-password", label: "Mật khẩu", required: true, minLength: 8 },
   ])) {
     return;
   }
@@ -18,6 +18,7 @@ async function onRegister(event) {
     email: document.getElementById("register-email").value,
     phone: document.getElementById("register-phone").value || null,
     password: document.getElementById("register-password").value,
+    role: document.getElementById("register-role").value,
   };
 
   try {

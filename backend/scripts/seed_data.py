@@ -23,8 +23,8 @@ from app.models.user import User
 setup_logging()
 logger = get_logger(__name__)
 
-ADMIN_EMAIL = "admin@example.com"
-ADMIN_PASSWORD = "Admin123!"
+SELLER_EMAIL = "seller@example.com"
+SELLER_PASSWORD = "Seller123!"
 CUSTOMER_EMAIL = "customer@example.com"
 CUSTOMER_PASSWORD = "Customer123!"
 
@@ -55,28 +55,28 @@ def _get_or_create_user(db: Session, *, email: str, full_name: str, password: st
 
 
 def seed_data(db: Session) -> None:
-    admin_role = _get_or_create_role(db, "admin")
+    seller_role = _get_or_create_role(db, "seller")
     customer_role = _get_or_create_role(db, "customer")
 
     _get_or_create_user(
         db,
-        email=ADMIN_EMAIL,
-        full_name="Quản trị viên Demo",
-        password=ADMIN_PASSWORD,
-        role=admin_role,
+        email=SELLER_EMAIL,
+        full_name="Seller Demo",
+        password=SELLER_PASSWORD,
+        role=seller_role,
     )
     _get_or_create_user(
         db,
         email=CUSTOMER_EMAIL,
-        full_name="Khách hàng Demo",
+        full_name="Customer Demo",
         password=CUSTOMER_PASSWORD,
         role=customer_role,
     )
 
     categories = [
-        ("Thức ăn cho chó", "dog-food", "Các dòng thức ăn khô và ướt dành cho chó"),
-        ("Cát vệ sinh cho mèo", "cat-litter", "Sản phẩm cát vệ sinh và khử mùi cho mèo"),
-        ("Đồ chơi thú cưng", "pet-toy", "Các loại đồ chơi giúp thú cưng vận động và giải trí"),
+        ("Thuc an cho cho", "dog-food", "Cac dong thuc an kho va uot danh cho cho"),
+        ("Cat ve sinh cho meo", "cat-litter", "San pham cat ve sinh va khu mui cho meo"),
+        ("Do choi thu cung", "pet-toy", "Cac loai do choi giup thu cung van dong va giai tri"),
     ]
     category_map: dict[str, Category] = {}
     for name, slug, description in categories:
@@ -89,10 +89,10 @@ def seed_data(db: Session) -> None:
 
     products = [
         {
-            "name": "Thức ăn chó cao cấp 5kg",
+            "name": "Thuc an cho cao cap 5kg",
             "slug": "premium-dog-food-5kg",
             "sku": "DOG-001",
-            "description": "Công thức cân bằng dinh dưỡng cho chó trưởng thành.",
+            "description": "Cong thuc can bang dinh duong cho cho truong thanh.",
             "price": "250000.00",
             "stock_quantity": 20,
             "brand": "Royal Pets",
@@ -101,10 +101,10 @@ def seed_data(db: Session) -> None:
             "image_url": "https://example.com/dog-food-5kg.jpg",
         },
         {
-            "name": "Cát vệ sinh mèo hương lavender",
+            "name": "Cat ve sinh meo huong lavender",
             "slug": "cat-litter-lavender",
             "sku": "CAT-001",
-            "description": "Cát vệ sinh giúp khử mùi hiệu quả cho mèo.",
+            "description": "Cat ve sinh giup khu mui hieu qua cho meo.",
             "price": "120000.00",
             "stock_quantity": 15,
             "brand": "Clean Paws",
@@ -113,10 +113,10 @@ def seed_data(db: Session) -> None:
             "image_url": "https://example.com/cat-litter.jpg",
         },
         {
-            "name": "Đồ chơi dây thừng cho thú cưng",
+            "name": "Do choi day thung cho thu cung",
             "slug": "pet-rope-toy",
             "sku": "TOY-001",
-            "description": "Đồ chơi dây bền chắc giúp thú cưng vận động mỗi ngày.",
+            "description": "Do choi day ben chac giup thu cung van dong moi ngay.",
             "price": "50000.00",
             "stock_quantity": 30,
             "brand": "Happy Tail",
@@ -152,18 +152,18 @@ def seed_data(db: Session) -> None:
 
     articles = [
         {
-            "title": "Cách chọn thức ăn phù hợp cho chó",
+            "title": "Cach chon thuc an phu hop cho cho",
             "slug": "how-to-choose-dog-food",
-            "summary": "Một vài gợi ý đơn giản để chọn đúng loại thức ăn cho chó.",
-            "content": "Hãy bắt đầu từ độ tuổi, giống chó và mức độ vận động hằng ngày để chọn khẩu phần phù hợp.",
+            "summary": "Mot vai goi y don gian de chon dung loai thuc an cho cho.",
+            "content": "Hay bat dau tu do tuoi, giong cho va muc do van dong hang ngay de chon khau phan phu hop.",
             "is_published": True,
             "published_at": datetime.now(UTC),
         },
         {
-            "title": "Những điều cơ bản khi chọn cát vệ sinh cho mèo",
+            "title": "Nhung dieu co ban khi chon cat ve sinh cho meo",
             "slug": "cat-litter-basics",
-            "summary": "Các tiêu chí nên cân nhắc trước khi mua cát vệ sinh cho mèo.",
-            "content": "Bạn nên xem xét khả năng khử mùi, độ bụi và khả năng vón cục trước khi lựa chọn.",
+            "summary": "Cac tieu chi nen can nhac truoc khi mua cat ve sinh cho meo.",
+            "content": "Ban nen xem xet kha nang khu mui, do bui va kha nang von cuc truoc khi lua chon.",
             "is_published": False,
             "published_at": None,
         },

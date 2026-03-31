@@ -40,7 +40,7 @@ def upgrade() -> None:
         "roles",
         sa.column("name", sa.String(length=50)),
     )
-    op.bulk_insert(role_table, [{"name": "admin"}, {"name": "customer"}])
+    op.bulk_insert(role_table, [{"name": "seller"}, {"name": "customer"}])
 
     op.create_table(
         "categories",

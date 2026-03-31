@@ -64,7 +64,7 @@ Nếu backend chạy ở URL khác, sửa trong file này.
 
 Sau khi seed backend:
 
-- Admin: `admin@example.com` / `Admin123!`
+- Seller: `seller@example.com` / `Seller123!`
 - Customer: `customer@example.com` / `Customer123!`
 
 ## Luồng customer
@@ -80,15 +80,15 @@ Sau khi seed backend:
 - Checkout: `pages/checkout.html`
 - Lịch sử đơn hàng: `pages/orders.html`
 
-## Luồng admin
+## Luồng seller
 
-- Đăng nhập admin: `pages/admin-login.html`
-- Dashboard: `pages/admin-dashboard.html`
-- Quản lý danh mục: `pages/admin-categories.html`
-- Quản lý sản phẩm: `pages/admin-products.html`
-- Quản lý đơn hàng: `pages/admin-orders.html`
-- Quản lý khách hàng: `pages/admin-customers.html`
-- Quản lý bài viết: `pages/admin-articles.html`
+- Đăng nhập seller: `pages/seller-login.html`
+- Dashboard: `pages/seller-dashboard.html`
+- Quản lý danh mục: `pages/seller-categories.html`
+- Quản lý sản phẩm: `pages/seller-products.html`
+- Quản lý đơn hàng: `pages/seller-orders.html`
+- Quản lý khách hàng: `pages/seller-customers.html`
+- Quản lý bài viết: `pages/seller-articles.html`
 
 ## Những gì đã có ở milestone 4
 
@@ -97,5 +97,5 @@ Sau khi seed backend:
 - Loading state cho form submit và danh sách chính
 - Toast thông báo thành công/thất bại
 - Xử lý lỗi request tập trung trong `assets/js/api.js`
-- Guard customer/admin dùng token trong `localStorage`
-- Admin pages xác thực lại qua `/auth/me`
+- Guard customer/seller dùng token trong `localStorage`
+- Seller pages xác thực lại qua `/auth/me`

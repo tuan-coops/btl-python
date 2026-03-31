@@ -1,29 +1,29 @@
-var adminUsersState = { page: 1, pageSize: 10 };
+var sellerUsersState = { page: 1, pageSize: 10 };
 
 document.addEventListener("DOMContentLoaded", function () {
-  window.PetShop.ensureAdminAccess().then(function (ok) {
+  window.PetShop.ensureSellerAccess().then(function (ok) {
     if (!ok) {
       return;
     }
-    document.getElementById("admin-users-filter-form").addEventListener("submit", function (event) {
+    document.getElementById("seller-users-filter-form").addEventListener("submit", function (event) {
       event.preventDefault();
-      adminUsersState.page = 1;
-      loadAdminUsers();
+      sellerUsersState.page = 1;
+      loadSellerUsers();
     });
-    loadAdminUsers();
+    loadSellerUsers();
   });
 });
 
-async function loadAdminUsers() {
-  var tbody = document.getElementById("admin-users-body");
-  var pagination = document.getElementById("admin-users-pagination");
+async function loadSellerUsers() {
+  var tbody = document.getElementById("seller-users-body");
+  var pagination = document.getElementById("seller-users-pagination");
   var params = new URLSearchParams({
-    page: adminUsersState.page,
-    page_size: adminUsersState.pageSize,
+    page: sellerUsersState.page,
+    page_size: sellerUsersState.pageSize,
   });
   [
-    ["role", document.getElementById("admin-users-filter-role").value],
-    ["is_active", document.getElementById("admin-users-filter-active").value],
+    ["role", document.getElementById("seller-users-filter-role").value],
+    ["is_active", document.getElementById("seller-users-filter-active").value],
   ].forEach(function (entry) {
     if (entry[1]) {
       params.set(entry[0], entry[1]);
@@ -31,7 +31,7 @@ async function loadAdminUsers() {
   });
 
   try {
-    var data = await window.PetShop.api.request("/admin/users?" + params.toString());
+    var data = await window.PetShop.api.request("/seller/users?" + params.toString());
     tbody.innerHTML = data.items.map(function (user) {
       return (
         "<tr>" +
@@ -46,8 +46,8 @@ async function loadAdminUsers() {
     }).join("");
 
     window.PetShop.ui.renderPagination(pagination, data, function (page) {
-      adminUsersState.page = page;
-      loadAdminUsers();
+      sellerUsersState.page = page;
+      loadSellerUsers();
     });
   } catch (error) {
     tbody.innerHTML = '<tr><td colspan="6">' + error.message + "</td></tr>";

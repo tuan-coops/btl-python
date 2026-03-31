@@ -4,7 +4,7 @@ from app.models.order import Order
 from app.models.user import User
 
 
-class AdminOrderRepository:
+class SellerOrderRepository:
     def __init__(self, db: Session) -> None:
         self.db = db
 

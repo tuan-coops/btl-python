@@ -8,7 +8,7 @@ async function onLogin(event) {
   var button = form.querySelector('button[type="submit"]');
   if (!window.PetShop.ui.prepareFormSubmit(form, button, [
     { id: "login-email", label: "Email", required: true, type: "email" },
-    { id: "login-password", label: "Mat khau", required: true, minLength: 8 },
+    { id: "login-password", label: "Mật khẩu", required: true, minLength: 8 },
   ])) {
     return;
   }
@@ -18,8 +18,8 @@ async function onLogin(event) {
       password: document.getElementById("login-password").value,
     });
     window.PetShop.ui.toast("Đăng nhập thành công");
-    if (result.user.role.name === "admin") {
-      window.location.href = "admin-dashboard.html";
+    if (result.user.role.name === "seller") {
+      window.location.href = "seller-dashboard.html";
       return;
     }
     window.location.href = "profile.html";

@@ -97,8 +97,8 @@ python scripts/seed_data.py
 
 Seed hien tao:
 
-- roles: `admin`, `customer`
-- 1 admin demo
+- roles: `seller`, `customer`
+- 1 seller demo
 - 1 customer demo
 - 3 category mau
 - 3 product mau
@@ -106,7 +106,7 @@ Seed hien tao:
 
 Tai khoan demo:
 
-- Admin: `admin@example.com` / `Admin123!`
+- Seller: `seller@example.com` / `Seller123!`
 - Customer: `customer@example.com` / `Customer123!`
 
 ## Chay app
@@ -144,30 +144,30 @@ Customer:
 - `GET /api/v1/articles`
 - `GET /api/v1/articles/{article_id}`
 
-Admin:
+Seller:
 
-- `GET /api/v1/admin/dashboard`
-- `POST /api/v1/admin/categories`
-- `GET /api/v1/admin/categories`
-- `PATCH /api/v1/admin/categories/{category_id}`
-- `DELETE /api/v1/admin/categories/{category_id}`
-- `POST /api/v1/admin/products`
-- `GET /api/v1/admin/products`
-- `PATCH /api/v1/admin/products/{product_id}`
-- `DELETE /api/v1/admin/products/{product_id}`
-- `GET /api/v1/admin/users`
-- `GET /api/v1/admin/orders`
-- `GET /api/v1/admin/orders/{order_id}`
-- `PATCH /api/v1/admin/orders/{order_id}/status`
-- `POST /api/v1/admin/articles`
-- `GET /api/v1/admin/articles`
-- `PATCH /api/v1/admin/articles/{article_id}`
-- `DELETE /api/v1/admin/articles/{article_id}`
+- `GET /api/v1/seller/dashboard`
+- `POST /api/v1/seller/categories`
+- `GET /api/v1/seller/categories`
+- `PATCH /api/v1/seller/categories/{category_id}`
+- `DELETE /api/v1/seller/categories/{category_id}`
+- `POST /api/v1/seller/products`
+- `GET /api/v1/seller/products`
+- `PATCH /api/v1/seller/products/{product_id}`
+- `DELETE /api/v1/seller/products/{product_id}`
+- `GET /api/v1/seller/users`
+- `GET /api/v1/seller/orders`
+- `GET /api/v1/seller/orders/{order_id}`
+- `PATCH /api/v1/seller/orders/{order_id}/status`
+- `POST /api/v1/seller/articles`
+- `GET /api/v1/seller/articles`
+- `PATCH /api/v1/seller/articles/{article_id}`
+- `DELETE /api/v1/seller/articles/{article_id}`
 
 ## Logging va Error Handling
 
 - Logging dung `logging` chuan cua Python, cau hinh tai [app/core/logging.py](/C:/Users/admin/OneDrive/Máy%20tính/Python/btl/backend/app/core/logging.py)
-- Co log startup/shutdown, auth fail quan trong, checkout tao order, admin update order status, unhandled exception
+- Co log startup/shutdown, auth fail quan trong, checkout tao order, seller update order status, unhandled exception
 - Error handling tap trung tai [app/core/exceptions.py](/C:/Users/admin/OneDrive/Máy%20tính/Python/btl/backend/app/core/exceptions.py)
 - Validation loi tra `detail` + `errors`
 - Unhandled exception duoc log server-side va tra message an toan cho client
@@ -183,13 +183,13 @@ Chay theo nhom:
 ```powershell
 pytest tests/test_auth.py
 pytest tests/test_customer_flow.py
-pytest tests/test_admin_flow.py
+pytest tests/test_seller_flow.py
 pytest tests/test_milestone6.py
 ```
 
 ## Trang thai hien tai
 
 - Customer flow da co products, categories, cart, checkout, order history
-- Admin flow da co dashboard, category/product management, user list, order management
-- Article/blog da co public list/detail va admin CRUD
+- Seller flow da co dashboard, category/product management, user list, order management
+- Article/blog da co public list/detail va seller CRUD
 - Co seed script, logging co ban, centralized error handling

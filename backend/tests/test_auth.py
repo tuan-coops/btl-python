@@ -1,14 +1,20 @@
 from fastapi.testclient import TestClient
 
 
-def register_user(client: TestClient, email: str = "customer@example.com", password: str = "Password123") -> dict:
+def register_user(
+    client: TestClient,
+    email: str = "customer@example.com",
+    password: str = "Password123",
+    role: str = "customer",
+) -> dict:
     response = client.post(
         "/api/v1/auth/register",
         json={
-            "full_name": "Test Customer",
+            "full_name": "Test User",
             "email": email,
             "phone": "0123456789",
             "password": password,
+            "role": role,
         },
     )
     assert response.status_code == 201
@@ -32,6 +38,13 @@ def test_register_success(client: TestClient) -> None:
     assert "hashed_password" not in body
 
 
+def test_register_seller_success(client: TestClient) -> None:
+    body = register_user(client, email="seller@example.com", role="seller")
+
+    assert body["email"] == "seller@example.com"
+    assert body["role"]["name"] == "seller"
+
+
 def test_register_duplicate_email(client: TestClient) -> None:
     register_user(client)
 
@@ -42,6 +55,7 @@ def test_register_duplicate_email(client: TestClient) -> None:
             "email": "customer@example.com",
             "phone": "0987654321",
             "password": "Password123",
+            "role": "customer",
         },
     )
 
