@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pet Shop | Quản lý bài viết</title>
+  <link rel="stylesheet" href="../assets/css/styles.css">
+</head>
+<body data-page="admin-articles">
+  <header id="site-header"></header>
+  <main class="page-section container">
+    <div class="page-header">
+      <div>
+        <h1 class="page-title">Quản lý bài viết</h1>
+        <p class="section-subtitle">CRUD article/blog để phục vụ trang kiến thức thú cưng.</p>
+      </div>
+    </div>
+    <div class="grid-two">
+      <form id="admin-article-form" class="form-card">
+        <input id="admin-article-id" type="hidden">
+        <div class="field"><label>Tiêu đề</label><input id="admin-article-title" required></div>
+        <div class="field"><label>Slug</label><input id="admin-article-slug" required></div>
+        <div class="field"><label>Tóm tắt</label><textarea id="admin-article-summary"></textarea></div>
+        <div class="field"><label>Nội dung</label><textarea id="admin-article-content" required></textarea></div>
+        <div class="field"><label><input id="admin-article-published" type="checkbox"> Publish ngay</label></div>
+        <button class="button" type="submit">Lưu bài viết</button>
+      </form>
+      <div class="table-card">
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>ID</th><th>Tiêu đề</th><th>Slug</th><th>Trạng thái</th><th>Hành động</th></tr></thead>
+            <tbody id="admin-articles-body"></tbody>
+          </table>
+        </div>
+        <div id="admin-articles-pagination"></div>
+      </div>
+    </div>
+  </main>
+  <footer id="site-footer"></footer>
+  <script src="../assets/js/config.js"></script>
+  <script src="../assets/js/storage.js"></script>
+  <script src="../assets/js/api.js"></script>
+  <script src="../assets/js/auth.js"></script>
+  <script src="../assets/js/ui.js"></script>
+  <script src="../assets/js/common.js"></script>
+  <script src="../assets/js/admin-articles.js"></script>
+</body>
+</html>

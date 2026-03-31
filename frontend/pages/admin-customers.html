@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pet Shop | Quản lý khách hàng</title>
+  <link rel="stylesheet" href="../assets/css/styles.css">
+</head>
+<body data-page="admin-customers">
+  <header id="site-header"></header>
+  <main class="page-section container">
+    <div class="page-header">
+      <div>
+        <h1 class="page-title">Quản lý khách hàng</h1>
+        <p class="section-subtitle">Danh sách user để phục vụ demo dashboard.</p>
+      </div>
+    </div>
+    <div class="table-card">
+      <form id="admin-users-filter-form" class="filter-row">
+        <select id="admin-users-filter-role"><option value="">Tất cả role</option><option value="customer">customer</option><option value="admin">admin</option></select>
+        <select id="admin-users-filter-active"><option value="">Tất cả trạng thái</option><option value="true">active</option><option value="false">inactive</option></select>
+        <button class="button-ghost" type="submit">Lọc</button>
+      </form>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>ID</th><th>Họ tên</th><th>Email</th><th>Phone</th><th>Role</th><th>Trạng thái</th></tr></thead>
+          <tbody id="admin-users-body"></tbody>
+        </table>
+      </div>
+      <div id="admin-users-pagination"></div>
+    </div>
+  </main>
+  <footer id="site-footer"></footer>
+  <script src="../assets/js/config.js"></script>
+  <script src="../assets/js/storage.js"></script>
+  <script src="../assets/js/api.js"></script>
+  <script src="../assets/js/auth.js"></script>
+  <script src="../assets/js/ui.js"></script>
+  <script src="../assets/js/common.js"></script>
+  <script src="../assets/js/admin-customers.js"></script>
+</body>
+</html>

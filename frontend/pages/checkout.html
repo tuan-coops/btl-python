@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pet Shop | Thanh toán</title>
+  <link rel="stylesheet" href="../assets/css/styles.css">
+</head>
+<body data-page="checkout">
+  <header id="site-header"></header>
+  <main class="page-section container">
+    <div class="page-header">
+      <div>
+        <h1 class="page-title">Thanh toán</h1>
+        <p class="section-subtitle">Nhập thông tin giao hàng và xác nhận đặt hàng.</p>
+      </div>
+    </div>
+    <div class="grid-two">
+      <form id="checkout-form" class="form-card">
+        <div class="grid-three">
+          <div class="field"><label>Người nhận</label><input id="checkout-recipient" required></div>
+          <div class="field"><label>Số điện thoại</label><input id="checkout-phone" required></div>
+          <div class="field"><label>Quốc gia</label><input id="checkout-country" value="Vietnam" required></div>
+        </div>
+        <div class="field"><label>Địa chỉ</label><input id="checkout-line1" required></div>
+        <div class="grid-three">
+          <div class="field"><label>Line 2</label><input id="checkout-line2"></div>
+          <div class="field"><label>Ward</label><input id="checkout-ward"></div>
+          <div class="field"><label>District</label><input id="checkout-district" required></div>
+        </div>
+        <div class="grid-three">
+          <div class="field"><label>City</label><input id="checkout-city" required></div>
+          <div class="field"><label>Province</label><input id="checkout-province" required></div>
+          <div class="field"><label>Phương thức thanh toán</label><select id="checkout-payment"><option value="cod">cod</option><option value="bank_transfer">bank_transfer</option></select></div>
+        </div>
+        <div class="field"><label>Ghi chú</label><textarea id="checkout-note"></textarea></div>
+        <button class="button" type="submit">Đặt hàng</button>
+      </form>
+      <aside id="checkout-cart-summary" class="summary-card"></aside>
+    </div>
+  </main>
+  <footer id="site-footer"></footer>
+  <script src="../assets/js/config.js"></script>
+  <script src="../assets/js/storage.js"></script>
+  <script src="../assets/js/api.js"></script>
+  <script src="../assets/js/auth.js"></script>
+  <script src="../assets/js/ui.js"></script>
+  <script src="../assets/js/common.js"></script>
+  <script src="../assets/js/checkout.js"></script>
+</body>
+</html>

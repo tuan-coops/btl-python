@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pet Shop | Quản lý sản phẩm</title>
+  <link rel="stylesheet" href="../assets/css/styles.css">
+</head>
+<body data-page="admin-products">
+  <header id="site-header"></header>
+  <main class="page-section container">
+    <div class="page-header">
+      <div>
+        <h1 class="page-title">Quản lý sản phẩm</h1>
+        <p class="section-subtitle">CRUD sản phẩm và cập nhật tồn kho.</p>
+      </div>
+    </div>
+    <div class="grid-two">
+      <form id="admin-product-form" class="form-card">
+        <input id="admin-product-id" type="hidden">
+        <div class="grid-three">
+          <div class="field"><label>Tên</label><input id="admin-product-name" required></div>
+          <div class="field"><label>Slug</label><input id="admin-product-slug" required></div>
+          <div class="field"><label>SKU</label><input id="admin-product-sku" required></div>
+        </div>
+        <div class="field"><label>Mô tả</label><textarea id="admin-product-description"></textarea></div>
+        <div class="grid-three">
+          <div class="field"><label>Giá</label><input id="admin-product-price" type="number" min="0" required></div>
+          <div class="field"><label>Tồn kho</label><input id="admin-product-stock" type="number" min="0" required></div>
+          <div class="field"><label>Brand</label><input id="admin-product-brand"></div>
+        </div>
+        <div class="grid-three">
+          <div class="field"><label>Pet type</label><select id="admin-product-pet-type"><option value="dog">dog</option><option value="cat">cat</option><option value="bird">bird</option><option value="fish">fish</option></select></div>
+          <div class="field"><label>Danh mục</label><select id="admin-product-category" required></select></div>
+          <div class="field"><label>Ảnh chính URL</label><input id="admin-product-image"></div>
+        </div>
+        <div class="field"><label><input id="admin-product-active" type="checkbox" checked> Đang hoạt động</label></div>
+        <button class="button" type="submit">Lưu sản phẩm</button>
+      </form>
+      <div class="table-card">
+        <form id="admin-product-filter-form" class="filter-row">
+          <select id="admin-product-filter-category"><option value="">Tất cả danh mục</option></select>
+          <select id="admin-product-filter-pet-type"><option value="">Tất cả pet type</option><option value="dog">dog</option><option value="cat">cat</option><option value="bird">bird</option><option value="fish">fish</option></select>
+          <input id="admin-product-filter-brand" placeholder="Lọc theo brand">
+          <select id="admin-product-filter-active"><option value="">Tất cả trạng thái</option><option value="true">active</option><option value="false">inactive</option></select>
+          <button class="button-ghost" type="submit">Lọc</button>
+        </form>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>ID</th><th>Tên</th><th>Danh mục</th><th>Giá</th><th>Tồn kho</th><th>Active</th><th>Hành động</th></tr></thead>
+            <tbody id="admin-products-body"></tbody>
+          </table>
+        </div>
+        <div id="admin-products-pagination"></div>
+      </div>
+    </div>
+  </main>
+  <footer id="site-footer"></footer>
+  <script src="../assets/js/config.js"></script>
+  <script src="../assets/js/storage.js"></script>
+  <script src="../assets/js/api.js"></script>
+  <script src="../assets/js/auth.js"></script>
+  <script src="../assets/js/ui.js"></script>
+  <script src="../assets/js/common.js"></script>
+  <script src="../assets/js/admin-products.js"></script>
+</body>
+</html>

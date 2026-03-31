@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pet Shop | Sản phẩm</title>
+  <link rel="stylesheet" href="../assets/css/styles.css">
+</head>
+<body data-page="products">
+  <header id="site-header"></header>
+  <main class="page-section container">
+    <div class="page-header">
+      <div>
+        <h1 class="page-title">Danh mục sản phẩm</h1>
+        <p class="section-subtitle">Lọc theo danh mục, pet type, giá và từ khóa.</p>
+      </div>
+    </div>
+    <section class="filters">
+      <form id="product-filter-form" class="grid-three">
+        <div class="field"><label>Từ khóa</label><input id="filter-search" placeholder="Tìm tên sản phẩm"></div>
+        <div class="field"><label>Danh mục</label><select id="filter-category"><option value="">Tất cả</option></select></div>
+        <div class="field"><label>Pet type</label><select id="filter-pet-type"><option value="">Tất cả</option><option value="dog">Dog</option><option value="cat">Cat</option><option value="bird">Bird</option><option value="fish">Fish</option></select></div>
+        <div class="field"><label>Brand</label><input id="filter-brand" placeholder="Vi du: Royal Canin"></div>
+        <div class="field"><label>Giá từ</label><input id="filter-price-min" type="number" min="0"></div>
+        <div class="field"><label>Giá đến</label><input id="filter-price-max" type="number" min="0"></div>
+        <div><button class="button" type="submit">Lọc sản phẩm</button></div>
+      </form>
+    </section>
+    <section id="products-list" class="card-grid" style="margin-top:20px;"></section>
+    <div id="products-pagination"></div>
+  </main>
+  <footer id="site-footer"></footer>
+  <script src="../assets/js/config.js"></script>
+  <script src="../assets/js/storage.js"></script>
+  <script src="../assets/js/api.js"></script>
+  <script src="../assets/js/auth.js"></script>
+  <script src="../assets/js/ui.js"></script>
+  <script src="../assets/js/common.js"></script>
+  <script src="../assets/js/products.js"></script>
+</body>
+</html>
